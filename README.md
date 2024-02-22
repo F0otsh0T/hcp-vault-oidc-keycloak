@@ -55,22 +55,22 @@ This repo walks through how to set up Vault and Keycloak for OIDC Authentication
 If you already have a Vault and Keycloak environment running somewhere, you just need to set your environment variables with the relevant inputs.
 ###### Set up OIDC Integration
 ```shell
-# make -f Makefile integrate-only
+make -f Makefile integrate-only
 ```
 ###### Clean OIDC Integration
 ```shell
-# make -f Makefile clean-integrate
+make -f Makefile clean-integrate
 ```
 
 #### Spin up Vault, Keycloak, and set up OIDC Integration
 Instantiate Vault and Keycloak then integrate OIDC between the two platforms.
 ###### Spin up
 ```shell
-# make -f Makefile testbed-all
+make -f Makefile testbed-all
 ```
 ###### Clean
 ```shell
-# make -f Makefile clean-all
+make -f Makefile clean-all
 ```
 
 #### 
