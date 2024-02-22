@@ -107,6 +107,7 @@ make -f Makefile clean-all
 ├── utility
 └── vault.hclic
 
+---
 
 ## OIDC ENTITY MATRIX
 
@@ -117,6 +118,17 @@ make -f Makefile clean-all
 | carol | carol | demo | `app1_owner_role` | root, demo | [app1_owner_policy.tpl](./integration/terraform/templates/app1_owner_policy.tpl) |
 | dan | dan | demo | `app2_owner_role` | root, demo | [app2_owner_policy.tpl](./integration/terraform/templates/app2_owner_policy.tpl) |
 
+---
+
+## CONTAINERS
+
+| CONTAINER | NETWORK | IP | PORT-INTERNAL | PORT-EXTERNAL |
+|-|-|-|-|-|
+| vault_s1 | vault-ent-network | 10.88.0.18 | 8200 | 8200 |
+| vault_s2 | vault-ent-network | 10.88.0.28 | 8200 | 28200 |
+| vautl_s3 | vault-ent-network | 10.88.0.38 | 8200 | 38200 |
+| keycloak | vault-ent-network | 10.88.0.100 | 8080 | 8080 |
+| postgresql | vault-ent-network | 10.88.0.101 | 5432 | 5432 |
 ---
 
 ## TERRAFORM
