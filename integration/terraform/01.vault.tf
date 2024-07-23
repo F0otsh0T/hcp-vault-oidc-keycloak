@@ -13,6 +13,9 @@ resource "vault_namespace" "demo" {
 # NAMESPACE: demo
 
 resource "vault_mount" "kvv2" {
+  depends_on = [
+    vault_namespace.demo #,
+  ]
   namespace   = vault_namespace.demo.path
   type        = "kv"
   description = "KVv2 Secret Engine Mount"
@@ -21,6 +24,9 @@ resource "vault_mount" "kvv2" {
 }
 
 resource "vault_kv_secret_v2" "app1_secret" {
+  depends_on = [
+    vault_namespace.demo #,
+  ]
   namespace           = vault_namespace.demo.path
   mount               = vault_mount.kvv2.path
   name                = "app1"
@@ -35,6 +41,9 @@ resource "vault_kv_secret_v2" "app1_secret" {
 }
 
 resource "vault_kv_secret_v2" "app2_secret" {
+  depends_on = [
+    vault_namespace.demo #,
+  ]
   namespace           = vault_namespace.demo.path
   mount               = vault_mount.kvv2.path
   name                = "app2"
@@ -105,6 +114,9 @@ resource "vault_jwt_auth_backend_role" "default_root" {
 # NAMESPACE: demo
 
 resource "vault_identity_oidc_key" "keycloak_provider_key_demo" {
+  depends_on = [
+    vault_namespace.demo #,
+  ]
   namespace  = vault_namespace.demo.path
   name       = "keycloak"
   algorithm  = "RS256"
@@ -131,6 +143,9 @@ resource "vault_identity_oidc_key" "keycloak_provider_key_demo" {
 # }
 
 resource "vault_jwt_auth_backend" "keycloak_demo" {
+  depends_on = [
+    vault_namespace.demo #,
+  ]
   namespace          = vault_namespace.demo.path
   path               = "oidc"
   type               = "oidc"
@@ -152,6 +167,9 @@ resource "vault_jwt_auth_backend" "keycloak_demo" {
 }
 
 resource "vault_jwt_auth_backend_role" "default_demo" {
+  depends_on = [
+    vault_namespace.demo #,
+  ]
   namespace       = vault_namespace.demo.path
   backend         = vault_jwt_auth_backend.keycloak_demo.path
   role_name       = "default"
@@ -184,30 +202,45 @@ resource "vault_policy" "vault_super_admin" {
 }
 
 resource "vault_policy" "vault_admin" {
+  depends_on = [
+    vault_namespace.demo #,
+  ]
   namespace = vault_namespace.demo.path
   name   = "vault-admin"
   policy = templatefile("${path.module}/templates/vault_admin_policy.tpl", {})
 }
 
 resource "vault_policy" "app1_owner" {
+  depends_on = [
+    vault_namespace.demo #,
+  ]
   namespace = vault_namespace.demo.path
   name   = "app1-owner"
   policy = templatefile("${path.module}/templates/app1_owner_policy.tpl", {})
 }
 
 resource "vault_policy" "app1_reader" {
+  depends_on = [
+    vault_namespace.demo #,
+  ]
   namespace = vault_namespace.demo.path
   name   = "app1-reader"
   policy = templatefile("${path.module}/templates/app1_reader_policy.tpl", {})
 }
 
 resource "vault_policy" "app2_owner" {
+  depends_on = [
+    vault_namespace.demo #,
+  ]
   namespace = vault_namespace.demo.path
   name   = "app2-owner"
   policy = templatefile("${path.module}/templates/app2_owner_policy.tpl", {})
 }
 
 resource "vault_policy" "app2_reader" {
+  depends_on = [
+    vault_namespace.demo #,
+  ]
   namespace = vault_namespace.demo.path
   name   = "app2-reader"
   policy = templatefile("${path.module}/templates/app2_reader_policy.tpl", {})
@@ -239,6 +272,9 @@ resource "vault_identity_group_alias" "vault_super_admin_group_alias" {
 
 resource "vault_identity_group" "vault_admin_group" {
   name      = "vault-admin"
+  depends_on = [
+    vault_namespace.demo #,
+  ]
   namespace = vault_namespace.demo.path
   type      = "external"
   policies = [
@@ -248,6 +284,9 @@ resource "vault_identity_group" "vault_admin_group" {
 
 resource "vault_identity_group_alias" "vault_admin_group_alias" {
   name           = "vault-admin"
+  depends_on = [
+    vault_namespace.demo #,
+  ]
   namespace      = vault_namespace.demo.path
   mount_accessor = vault_jwt_auth_backend.keycloak_demo.accessor
   canonical_id   = vault_identity_group.vault_admin_group.id
@@ -255,6 +294,9 @@ resource "vault_identity_group_alias" "vault_admin_group_alias" {
 
 resource "vault_identity_group" "app1_owner_group" {
   name      = "app1-owner"
+  depends_on = [
+    vault_namespace.demo #,
+  ]
   namespace = vault_namespace.demo.path
   type      = "external"
   metadata = {
@@ -267,6 +309,9 @@ resource "vault_identity_group" "app1_owner_group" {
 
 resource "vault_identity_group_alias" "app1_owner_group_alias" {
   name           = "app1-owner"
+  depends_on = [
+    vault_namespace.demo #,
+  ]
   namespace      = vault_namespace.demo.path
   mount_accessor = vault_jwt_auth_backend.keycloak_demo.accessor
   canonical_id   = vault_identity_group.app1_owner_group.id
@@ -274,6 +319,9 @@ resource "vault_identity_group_alias" "app1_owner_group_alias" {
 
 resource "vault_identity_group" "app2_owner_group" {
   name      = "app2-owner"
+  depends_on = [
+    vault_namespace.demo #,
+  ]
   namespace = vault_namespace.demo.path
   type      = "external"
   metadata = {
@@ -286,6 +334,9 @@ resource "vault_identity_group" "app2_owner_group" {
 
 resource "vault_identity_group_alias" "app2_owner_group_alias" {
   name           = "app2-owner"
+  depends_on = [
+    vault_namespace.demo #,
+  ]
   namespace      = vault_namespace.demo.path
   mount_accessor = vault_jwt_auth_backend.keycloak_demo.accessor
   canonical_id   = vault_identity_group.app2_owner_group.id
@@ -297,11 +348,17 @@ resource "vault_identity_group_alias" "app2_owner_group_alias" {
 # NAMESPACE: demo
 
 resource "vault_auth_backend" "approle" {
+  depends_on = [
+    vault_namespace.demo #,
+  ]
   namespace = vault_namespace.demo.path
   type      = "approle"
 }
 
 resource "vault_approle_auth_backend_role" "app1" {
+  depends_on = [
+    vault_namespace.demo #,
+  ]
   namespace      = vault_namespace.demo.path
   backend        = vault_auth_backend.approle.path
   role_name      = "app1"
@@ -316,7 +373,8 @@ data "vault_approle_auth_backend_role_id" "app1" {
 
 resource "vault_approle_auth_backend_role_secret_id" "app1" {
   depends_on = [
-    vault_approle_auth_backend_role.app1 #,
+    vault_approle_auth_backend_role.app1,
+    vault_namespace.demo #,
   ]
   namespace    = vault_namespace.demo.path
   backend      = vault_auth_backend.approle.path

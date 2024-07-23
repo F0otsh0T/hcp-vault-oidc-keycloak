@@ -28,11 +28,15 @@ test: #target ## Test
 ################################
 clean: #target ## Housekeeping
 
-clean-all: clean-integrate #target ## Clean All
+clean-all: clean-integrate clean-terraform #target ## Clean All
 
 clean-integrate: #target ## Clean Integration
 	@terraform -chdir=./terraform init && \
 	terraform -chdir=./terraform destroy -auto-approve
+
+clean-terraform: # target ## Clean Integration Terraform
+	cd terraform && \
+	rm terraform.tfstate* && rm .terraform.lock.hcl && rm -rf .terraform
 
 
 
